@@ -6,7 +6,6 @@ This project simulates neutron transport and nuclear fission processes using a M
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Project Structure](#project-structure)
 - [Classes and Functions](#classes-and-functions)
 - [Simulation Parameters](#simulation-parameters)
 - [Plotting and Analysis](#plotting-and-analysis)
