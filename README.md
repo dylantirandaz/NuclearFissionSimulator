@@ -35,6 +35,38 @@ To run the simulation, execute the `nuclear_fission_simulation.py` file:
 python nuclear_fission_simulation.py
 ```
 
+## Mathematical Explanation of Nuclear Fission Simulation
+
+This document provides a mathematical explanation of the nuclear fission simulation using Monte Carlo methods.
+
+### Watt Spectrum
+
+The Watt spectrum describes the distribution of neutron energies emitted during fission:
+
+$$ f(E) = a \sinh\left(\sqrt{bE}\right) e^{-aE - bE} $$
+
+### Cross-section Interpolation
+
+The cross-section data for each isotope is interpolated using cubic splines:
+
+$$ σ(E) = interp1d(energy\_data, cross\_section\_data, kind='cubic') $$
+
+### Neutron Scattering
+
+Neutrons scatter isotropically according to Maxwell-Boltzmann distribution:
+
+$$ f(v) = \sqrt{\frac{2}{\pi}} \left(\frac{v^3}{kT}\right)^{3/2} e^{-\frac{v^2}{2kT}} $$
+
+### Simulation Process
+
+The Monte Carlo simulation progresses through several steps:
+
+1. Initialization of neutrons and materials.
+2. Transport simulation using random walk.
+3. Interaction determination (fission, absorption, or scattering).
+4. Temperature evolution and energy deposition calculations.
+5. Criticality analysis based on neutron flux and reaction rates.
+
 ## Classes and Functions
 
 ### `generate_realistic_cross_section_data()`
