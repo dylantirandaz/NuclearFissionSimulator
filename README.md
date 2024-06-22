@@ -1,6 +1,5 @@
 # Nuclear Fission Simulator
-
-This is a Twitter bot that scrapes insider sales data from FinViz and posts sales over a specified amount on Twitter.
+a detailed model of nuclear fission chain reactions
 
 ## Explanation
 ### Neutron Class
