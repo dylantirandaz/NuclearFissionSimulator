@@ -1,0 +1,65 @@
+\documentclass{article}
+\usepackage{amsmath} % For math equations
+
+\begin{document}
+
+\title{Mathematical Foundations of Nuclear Fission Simulation}
+\author{Dylan Aria Tirandaz}
+\date{\today}
+\maketitle
+
+\section{Introduction}
+
+This document provides a detailed mathematical explanation of the nuclear fission simulation using Monte Carlo methods, based on computational algorithms used in neutron transport and fission physics.
+
+\section{Fundamental Equations}
+
+The simulation incorporates key equations and concepts essential for understanding neutron interactions and energy transport:
+
+\subsection{Watt Spectrum}
+
+The Watt spectrum describes the distribution of neutron energies emitted during fission, adapted from experimental data and nuclear physics principles:
+
+\begin{equation}
+f(E) = a \sinh\left(\sqrt{bE}\right) e^{-aE - bE}
+\end{equation}
+
+Here, \( E \) represents neutron energy, and parameters \( a \) and \( b \) are specific to each fissile isotope, influencing the energy distribution of emitted neutrons.
+
+\subsection{Cross-section Interpolation}
+
+Neutron cross-sections for each isotope are crucial for determining interaction probabilities. These cross-sections are interpolated using cubic splines based on experimental data:
+
+\begin{equation}
+\sigma(E) = \text{interp1d}(\text{energy\_data}, \text{cross\_section\_data}, \text{kind}='cubic')
+\end{equation}
+
+This interpolation method ensures accurate estimation of neutron interaction probabilities across a spectrum of energies.
+
+\subsection{Neutron Scattering}
+
+Neutrons scatter isotropically according to the Maxwell-Boltzmann distribution, influenced by the material's temperature \( T \):
+
+\begin{equation}
+f(v) = \sqrt{\frac{2}{\pi}} \left(\frac{v^3}{kT}\right)^{3/2} e^{-\frac{v^2}{2kT}}
+\end{equation}
+
+where \( v \) is the neutron speed, \( k \) is the Boltzmann constant, and \( T \) is the material temperature. This distribution governs the velocities of scattered neutrons based on thermal energy considerations.
+
+\section{Simulation Process}
+
+The Monte Carlo simulation progresses through several computational steps mirroring physical processes within a nuclear reactor:
+
+\begin{enumerate}
+    \item **Initialization**: Neutrons are initialized within a defined geometry, each with an initial position, direction, and energy distribution from the Watt spectrum.
+    \item **Neutron Transport**: Neutrons move through the material in discrete steps, with their paths determined by the mean free path and random walk principles.
+    \item **Interaction Mechanisms**: At each step, neutrons may undergo fission, absorption, or scattering interactions based on calculated probabilities from cross-sections and physical constants.
+    \item **Temperature Dynamics**: Energy deposition from neutron interactions contributes to the material's temperature evolution, governed by heat capacity and cooling rates.
+    \item **Criticality Analysis**: The simulation monitors neutron flux and reaction rates over time to assess criticality conditions, indicating sustained fission reactions.
+\end{enumerate}
+
+\section{Conclusion}
+
+This document has outlined the foundational mathematical principles and computational procedures employed in the simulation of nuclear fission using Monte Carlo methods. Understanding these equations and processes is essential for accurate modeling and analysis of nuclear reactor behavior.
+
+\end{document}
