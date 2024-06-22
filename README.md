@@ -13,7 +13,7 @@ Manages the simulation of the nuclear fission process.
 - `reaction_rate` calculates the reaction rate based on neutron density and material density.
 - `criticality_analysis` performs a criticality analysis, simulating the transport and reaction rate over time steps, and determining if the system becomes critical.
 ### Monte Carlo Simulation
-monte_carlo_simulation function initializes the model, performs the criticality analysis, and plots the reaction rates over time.
+- `monte_carlo_simulation` function initializes the model, performs the criticality analysis, and plots the reaction rates over time.
 ## USAGE
 Clone / Copy the repo
 - `mkdir nuclear_fission_simulation`
