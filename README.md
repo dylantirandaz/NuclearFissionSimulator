@@ -8,19 +8,19 @@ Represents a neutron with a position and direction.
 Methods move and scatter handle movement and scattering of neutrons, respectively.
 ### NuclearFissionModel Class
 Manages the simulation of the nuclear fission process.
--'initialize_neutrons' initializes neutrons with random directions.
--'simulate_transport' simulates neutron transport and scattering.
--'reaction_rate' calculates the reaction rate based on neutron density and material density.
--'criticality_analysis' performs a criticality analysis, simulating the transport and reaction rate over time steps, and determining if the system becomes critical.
+- `initialize_neutrons` initializes neutrons with random directions.
+- `simulate_transport` simulates neutron transport and scattering.
+- `reaction_rate` calculates the reaction rate based on neutron density and material density.
+- `criticality_analysis` performs a criticality analysis, simulating the transport and reaction rate over time steps, and determining if the system becomes critical.
 ### Monte Carlo Simulation
 monte_carlo_simulation function initializes the model, performs the criticality analysis, and plots the reaction rates over time.
 ## USAGE
 Clone / Copy the repo
-- 'mkdir nuclear_fission_simulation'
-- 'cd nuclear_fission_simulation'
-- 'python3 -m venv venv'
-- 'source venv/bin/activate'
-- 'pip install numpy matplotlib'
+- `mkdir nuclear_fission_simulation`
+- `cd nuclear_fission_simulation`
+- `python3 -m venv venv`
+- `source venv/bin/activate`
+- `pip install numpy matplotlib`
 ### Run the script
 python nuclear_fission_simulation.py
 
