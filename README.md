@@ -30,17 +30,11 @@ You can install the required packages using pip:
 pip install numpy matplotlib scipy pandas seaborn scikit-learn
 ```
 ## Usage
-To run the simulation, execute the `main.py` file:
+To run the simulation, execute the `nuclear_fission_simulation.py` file:
 
 ```bash
-python main.py
+python nuclear_fission_simulation.py
 ```
-
-## Project Structure
-
-- `main.py`: Entry point for the simulation.
-- `neutron_transport.py`: Contains classes and functions for neutron transport and interactions.
-- `analysis.py`: Functions for plotting and analyzing simulation results.
 
 ## Classes and Functions
 
