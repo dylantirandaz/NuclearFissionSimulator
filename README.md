@@ -1,33 +1,96 @@
-# Nuclear Fission Simulator
-a detailed model of nuclear fission chain reactions
+# Nuclear Fission Simulation
 
-## Explanation
-### Neutron Class
-Represents a neutron with a position and direction.
-Methods move and scatter handle movement and scattering of neutrons, respectively.
-### NuclearFissionModel Class
-Manages the simulation of the nuclear fission process.
-- `initialize_neutrons` initializes neutrons with random directions.
-- `simulate_transport` simulates neutron transport and scattering.
-- `reaction_rate` calculates the reaction rate based on neutron density and material density.
-- `criticality_analysis` performs a criticality analysis, simulating the transport and reaction rate over time steps, and determining if the system becomes critical.
-### Monte Carlo Simulation
-- `monte_carlo_simulation` function initializes the model, performs the criticality analysis, and plots the reaction rates over time.
-## USAGE
-Clone / Copy the repo
-- `mkdir nuclear_fission_simulation`
-- `cd nuclear_fission_simulation`
-- `python3 -m venv venv`
-- `source venv/bin/activate`
-- `pip install numpy matplotlib`
-### Run the script
-python nuclear_fission_simulation.py
+This project simulates neutron transport and nuclear fission processes using a Monte Carlo method. The simulation tracks neutron movements, interactions, and fission events within a defined geometry and material.
 
+## Table of Contents
+
+- [Installation](#installation)
+- [Usage](#usage)
+- [Project Structure](#project-structure)
+- [Classes and Functions](#classes-and-functions)
+- [Simulation Parameters](#simulation-parameters)
+- [Plotting and Analysis](#plotting-and-analysis)
+- [Contributing](#contributing)
+- [License](#license)
+
+## Installation
+
+To run this project, you need Python 3 and the following packages:
+
+- numpy
+- matplotlib
+- scipy
+- pandas
+- seaborn
+- scikit-learn
+
+You can install the required packages using pip:
+
+```bash
+pip install numpy matplotlib scipy pandas seaborn scikit-learn
+```
+## Usage
+To run the simulation, execute the `main.py` file:
+
+```bash
+python main.py
+```
+
+## Project Structure
+
+- `main.py`: Entry point for the simulation.
+- `neutron_transport.py`: Contains classes and functions for neutron transport and interactions.
+- `analysis.py`: Functions for plotting and analyzing simulation results.
+
+## Classes and Functions
+
+### `generate_realistic_cross_section_data()`
+Generates synthetic cross-section data for different isotopes.
+
+### `Isotope`
+Represents an isotope with its properties and cross-section data.
+
+### `Neutron`
+Represents a neutron with its position, direction, and energy.
+
+### `Material`
+Represents a material composed of different isotopes and manages its temperature and density.
+
+### `SphericalShellGeometry`
+Defines a spherical shell geometry for the simulation space.
+
+### `NuclearFissionModel`
+Handles the neutron transport, interactions, and fission processes.
+
+- `initialize_neutrons(num_neutrons)`: Initializes neutrons in the geometry.
+- `simulate_transport(time_step)`: Simulates neutron transport and interactions for a given time step.
+- `criticality_analysis(total_time, initial_time_step)`: Analyzes the system for criticality over a given total time.
+- `spatial_reaction_distribution()`: Returns the spatial distribution of fission events.
+- `plot_results(model)`: Plots the results of the simulation, including reaction rates, fission event locations, neutron energy distribution, and temperature evolution.
+- `analyze_results(model)`: Analyzes the results of the simulation, including clustering of fission events, neutron lifecycle analysis, and reactivity calculation.
+- `monte_carlo_simulation(num_neutrons, material, geometry, total_time, initial_time_step)`: Runs the Monte Carlo simulation with the specified parameters.
+
+## Simulation Parameters
+
+- `num_neutrons`: Initial number of neutrons.
+- `material`: Material object containing isotopes and temperature.
+- `geometry`: Geometry object defining the simulation space.
+- `total_time`: Total time for the simulation.
+- `initial_time_step`: Initial time step for the simulation.
+
+## Plotting and Analysis
+
+The simulation results are visualized and analyzed through various plots and statistical methods:
+
+- **Reaction Rate Plot**: Shows the reaction rate over time.
+- **3D Fission Events Plot**: Displays the locations and temperatures of fission events.
+- **Neutron Energy Distribution**: Histogram of neutron energies.
+- **Temperature Evolution**: Tracks the temperature changes over time.
 
 ## Contributing
 
-Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request.
+Contributions are welcome! Please fork the repository and submit a pull request.
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE).
+This project is licensed under the MIT License. See the LICENSE file for details.
