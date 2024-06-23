@@ -114,7 +114,7 @@ class Material:
         temperature_change = energy_deposition / (self.heat_capacity * self.total_density)
         self.temperature += temperature_change
         self.temperature -= COOLING_RATE * time_step
-        self.temperature = max(self.temperature, 300)  # Ensure temperature doesn't go below 300K
+        self.temperature = max(self.temperature, 300)  # Ensures temperature doesn't go below 300K
 
 class SphericalShellGeometry:
     def __init__(self, inner_radius, outer_radius):
@@ -182,7 +182,7 @@ class NuclearFissionModel:
     def determine_interaction(self, neutron, isotope):
         cross_section = isotope.cross_section_func(neutron.energy)
         fission_prob = FISSION_PROBABILITY[isotope.name] * cross_section / np.max(cross_section_data['cross_section'])
-        fission_prob *= 0.001  # Further reduce fission probability
+        fission_prob *= 0.001  # feel free to adjust if u want to reduce fission probability
 
         rand = np.random.random()
         if rand < fission_prob:
@@ -250,7 +250,7 @@ class NuclearFissionModel:
             
             print(f"Time: {self.time:.4f}s, Fissions: {fissions}, Neutrons: {len(self.neutrons)}, T={self.material.temperature:.2f}K")
             
-            if rate > CRITICAL_MASS_THRESHOLD and self.cumulative_fissions > 100:  # Require more fissions before declaring criticality
+            if rate > CRITICAL_MASS_THRESHOLD and self.cumulative_fissions > 100:  
                 print(f"System became critical at time {self.time:.4f}s")
                 break
             
@@ -409,14 +409,14 @@ def monte_carlo_simulation(num_neutrons, material, geometry, total_time, initial
 
 if __name__ == "__main__":
     isotopes = [
-        Isotope('U235', density=19.1, abundance=0.03),  # Increased enrichment to 3%
+        Isotope('U235', density=19.1, abundance=0.03),  # 6-23-24 i increased enrichment to 3%
         Isotope('U238', density=19.1, abundance=0.97),
         Isotope('Pu239', density=0.1, abundance=0.0001),
         Isotope('Pu241', density=0.01, abundance=0.00001),
         Isotope('Th232', density=0.01, abundance=0.00001)
     ]
     material = Material(isotopes, temperature=300)
-    geometry = SphericalShellGeometry(inner_radius=0, outer_radius=20)  # Increased size
+    geometry = SphericalShellGeometry(inner_radius=0, outer_radius=20)  # 6-23-24 i increased size
     #monte_carlo_simulation(num_neutrons=10000, material=material, geometry=geometry, total_time=1.0, initial_time_step=1e-6)
 
     start_time = time.time()
