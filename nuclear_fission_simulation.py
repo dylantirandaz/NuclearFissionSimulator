@@ -13,31 +13,31 @@ import multiprocessing
 import time
 
 
-# Constants
+#constants
 NEUTRONS_PER_FISSION = {
     'U235': 2.43, 'U238': 2.3, 'Pu239': 2.88, 'Pu241': 2.93, 'Th232': 2.45
 }
 MEAN_FREE_PATH = {
     'U235': 2.0, 'U238': 2.5, 'Pu239': 1.8, 'Pu241': 1.9, 'Th232': 2.2
-}  # cm
+}  #cm
 FISSION_PROBABILITY = {
     'U235': 0.00085, 'U238': 0.00015, 'Pu239': 0.00087, 'Pu241': 0.00089, 'Th232': 0.0001
 } 
 NEUTRON_ABSORPTION_PROBABILITY = 0.02
-HEAT_CAPACITY = 0.2  # J/(g·K)
-COOLING_RATE = 1e-8  # K/s
+HEAT_CAPACITY = 0.2  #J/(g·K)
+COOLING_RATE = 1e-8  #K/s
 CRITICAL_MASS_THRESHOLD = 1000000
 MAX_NEUTRONS = 1000000
-BOLTZMANN_CONSTANT = 8.617333262145e-5  # eV/K
+BOLTZMANN_CONSTANT = 8.617333262145e-5  #eV/K
 
 def generate_realistic_cross_section_data():
     isotopes = ['U235', 'U238', 'Pu239', 'Pu241', 'Th232']
-    energies = np.logspace(-5, 7, 1000)  # 10^-5 to 10^7 eV
+    energies = np.logspace(-5, 7, 1000)  #10^-5 to 10^7 eV
     data = []
 
     for isotope in isotopes:
         if isotope == 'U235':
-            base_xs = 100 + 500 * np.exp(-energies / 0.0253)  # Peak at thermal energy (0.0253 eV)
+            base_xs = 100 + 500 * np.exp(-energies / 0.0253)#Peak at thermal energy (0.0253 eV)
         elif isotope == 'U238':
             base_xs = 10 + 50 * np.exp(-energies / 1e6)
         else:
@@ -114,7 +114,7 @@ class Material:
         temperature_change = energy_deposition / (self.heat_capacity * self.total_density)
         self.temperature += temperature_change
         self.temperature -= COOLING_RATE * time_step
-        self.temperature = max(self.temperature, 300)  # Ensures temperature doesn't go below 300K
+        self.temperature = max(self.temperature, 300)  
 
 class SphericalShellGeometry:
     def __init__(self, inner_radius, outer_radius):
@@ -142,7 +142,7 @@ class NuclearFissionModel:
         self.cumulative_fissions = 0
         self.energy_deposition = 0
         self.time = 0
-        self.fission_events = deque(maxlen=10000)  # Store last 10000 events
+        self.fission_events = deque(maxlen=10000)  
         self.neutron_lifecycles = {}
         self.energy_deposition = 0
         self.neutron_flux = []
@@ -173,7 +173,7 @@ class NuclearFissionModel:
 
     def watt_spectrum(self):
         """Generate neutron energy based on Watt fission spectrum."""
-        a, b = 0.988, 2.249  # Parameters for U-235
+        a, b = 0.988, 2.249  
         x = np.random.random()
         E = -a * np.log(np.random.random()) - b * np.log(np.random.random())
         return a * np.sinh(np.sqrt(b * E))
@@ -182,7 +182,7 @@ class NuclearFissionModel:
     def determine_interaction(self, neutron, isotope):
         cross_section = isotope.cross_section_func(neutron.energy)
         fission_prob = FISSION_PROBABILITY[isotope.name] * cross_section / np.max(cross_section_data['cross_section'])
-        fission_prob *= 0.001  # feel free to adjust if u want to reduce fission probability
+        fission_prob *= 0.001  #feel free to adjust if u want to reduce fission probability
 
         rand = np.random.random()
         if rand < fission_prob:
