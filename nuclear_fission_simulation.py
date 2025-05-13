@@ -197,8 +197,8 @@ class NuclearFissionModel:
         return len(self.neutrons) / volume
 
     def calculate_power_output(self, fissions):
-        # Assuming 200 MeV per fission
-        return fissions * 200 * 1.60218e-13  # Convert MeV to Joules
+        #assuming 200 MeV per fission
+        return fissions * 200 * 1.60218e-13  #convert MeV to Joules
 
     def simulate_transport(self, time_step):
         new_neutrons = []
@@ -209,14 +209,14 @@ class NuclearFissionModel:
             neutron.move(distance * time_step)
             
             if not self.geometry.is_inside(neutron.position):
-                continue  # Neutron escaped
+                continue  #neutron escaped
 
             interaction_type = self.determine_interaction(neutron, isotope)
             if interaction_type == 'fission':
                 fissions_this_step += 1
                 self.cumulative_fissions += 1
                 self.fission_events.append((self.time, neutron.position, self.material.temperature))
-                self.energy_deposition += 200e6 * 1.60218e-19  # Convert eV to Joules
+                self.energy_deposition += 200e6 * 1.60218e-19  #convert eV to joules
                 for _ in range(int(np.random.normal(NEUTRONS_PER_FISSION[isotope.name], 0.5))):
                     new_neutron = Neutron(neutron.position, self.random_direction(), self.watt_spectrum())
                     new_neutrons.append(new_neutron)
@@ -233,7 +233,7 @@ class NuclearFissionModel:
             self.neutrons = self.neutrons[:MAX_NEUTRONS]
 
         self.material.update_temperature(self.energy_deposition, time_step)
-        self.energy_deposition = 0  # Reset energy deposition for next step
+        self.energy_deposition = 0  #Reset energy deposition 
         
         self.neutron_flux.append(self.calculate_neutron_flux())
         self.power_output.append(self.calculate_power_output(fissions_this_step))
@@ -254,7 +254,6 @@ class NuclearFissionModel:
                 print(f"System became critical at time {self.time:.4f}s")
                 break
             
-            # Adaptive time step
             time_step = min(initial_time_step, 1 / (rate + 1))
             self.time += time_step
 
@@ -275,7 +274,6 @@ def parallel_monte_carlo(num_simulations, num_neutrons, material, geometry, tota
 def plot_results(model):
     fig = plt.figure(figsize=(20, 15))
 
-    # Reaction rate plot
     ax1 = fig.add_subplot(221)
     ax1.plot(model.time_steps, model.reaction_rates, label='Reaction Rate')
     ax1.axhline(y=CRITICAL_MASS_THRESHOLD, color='r', linestyle='--', label='Critical Mass Threshold')
@@ -283,11 +281,10 @@ def plot_results(model):
     ax1.set_ylabel('Reaction Rate')
     ax1.legend()
 
-    # 3D fission events plot
     ax2 = fig.add_subplot(222, projection='3d')
     if model.fission_events:
-        fission_events = np.array([event[1] for event in model.fission_events])  # event[1] is the position
-        temperatures = np.array([event[2] for event in model.fission_events])  # event[2] is the temperature
+        fission_events = np.array([event[1] for event in model.fission_events])  
+        temperatures = np.array([event[2] for event in model.fission_events]) 
         scatter = ax2.scatter(fission_events[:, 0], fission_events[:, 1], fission_events[:, 2],
                               c=temperatures, cmap='hot', s=10)
         fig.colorbar(scatter, label='Temperature (K)')
@@ -299,7 +296,6 @@ def plot_results(model):
     ax2.set_title('Fission Event Locations and Temperatures')
 
     
-    # plots for neutron flux and power output
     ax5 = fig.add_subplot(325)
     ax5.plot(model.time_steps, model.neutron_flux)
     ax5.set_xlabel('Time (s)')
@@ -315,7 +311,6 @@ def plot_results(model):
     plt.tight_layout()
     plt.show()
 
-    # Neutron energy distribution
     ax3 = fig.add_subplot(223)
     energies = [n.energy for n in model.neutrons]
     if energies:
@@ -326,7 +321,6 @@ def plot_results(model):
     ax3.set_ylabel('Count')
     ax3.set_title('Neutron Energy Distribution')
 
-    # Temperature evolution
     ax4 = fig.add_subplot(224)
     if model.fission_events:
         times = [event[0] for event in model.fission_events]
@@ -346,12 +340,10 @@ def analyze_results(model):
         print("No fission events occurred during the simulation.")
         return
 
-    # Fission event analysis
     num_fissions = len(model.fission_events)
     print(f"Total number of fission events: {num_fissions}")
 
     if num_fissions > 1:
-        # Clustering analysis of fission events
         fission_locations = np.array([event[1] for event in model.fission_events])
         clustering = DBSCAN(eps=0.5, min_samples=2).fit(fission_locations)
         n_clusters = len(set(clustering.labels_)) - (1 if -1 in clustering.labels_ else 0)
@@ -359,7 +351,6 @@ def analyze_results(model):
     else:
         print("Not enough fission events for clustering analysis.")
 
-    # Neutron lifecycle analysis
     if model.neutrons:
         lifecycle_lengths = [n.age for n in model.neutrons]
         avg_lifecycle = np.mean(lifecycle_lengths)
@@ -367,7 +358,6 @@ def analyze_results(model):
     else:
         print("No neutrons present at the end of the simulation.")
 
-    # Reactivity calculation
     if model.reaction_rates:
         k_eff = len(model.neutrons) / model.reaction_rates[-1] if model.reaction_rates[-1] > 0 else 0
         reactivity = (k_eff - 1) / k_eff if k_eff != 0 else float('inf')
@@ -376,7 +366,6 @@ def analyze_results(model):
     else:
         print("No reaction rate data available for reactivity calculation.")
 
-    # Temperature analysis
     if model.fission_events:
         temperatures = [event[2] for event in model.fission_events]
         avg_temp = np.mean(temperatures)
@@ -384,7 +373,6 @@ def analyze_results(model):
         print(f"Average temperature during fission events: {avg_temp:.2f} K")
         print(f"Maximum temperature reached: {max_temp:.2f} K")
     
-    # Neutron flux and power output analysis
     if model.neutron_flux:
         avg_flux = np.mean(model.neutron_flux)
         max_flux = np.max(model.neutron_flux)
@@ -409,14 +397,14 @@ def monte_carlo_simulation(num_neutrons, material, geometry, total_time, initial
 
 if __name__ == "__main__":
     isotopes = [
-        Isotope('U235', density=19.1, abundance=0.03),  # 6-23-24 i increased enrichment to 3%
+        Isotope('U235', density=19.1, abundance=0.03),  #6-23-24 i increased enrichment to 3%
         Isotope('U238', density=19.1, abundance=0.97),
         Isotope('Pu239', density=0.1, abundance=0.0001),
         Isotope('Pu241', density=0.01, abundance=0.00001),
         Isotope('Th232', density=0.01, abundance=0.00001)
     ]
     material = Material(isotopes, temperature=300)
-    geometry = SphericalShellGeometry(inner_radius=0, outer_radius=20)  # 6-23-24 i increased size
+    geometry = SphericalShellGeometry(inner_radius=0, outer_radius=20)  #6-23-24 i increased size
     #monte_carlo_simulation(num_neutrons=10000, material=material, geometry=geometry, total_time=1.0, initial_time_step=1e-6)
 
     start_time = time.time()
@@ -426,7 +414,6 @@ if __name__ == "__main__":
 
     print(f"Total simulation time for {num_simulations} runs: {end_time - start_time:.2f} seconds")
 
-    # Analyze and plot results from all simulations
     for i, model in enumerate(results):
         print(f"\nResults for Simulation {i+1}:")
         analyze_results(model)
